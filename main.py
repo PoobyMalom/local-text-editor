@@ -11,7 +11,8 @@ global entry1
 
 def savefile():
     print("New File!")
-    file_name = filedialog.asksaveasfilename(initialdir="/", title="Select file", filetypes=(("text files", ".txt"), ("all files", ".")))
+    file_name = filedialog.asksaveasfilename(initialdir="/Desktop", title="Select file",
+                                             filetypes=(("text files", ".txt"), ("all files", ".")))
 
     if file_name:
         file = open(file_name, "w")
@@ -40,20 +41,14 @@ def check():
         print("nothing")
 
 
-'''def NewFile():
-    new_window = Toplevel(root)
-    new_window.title("new file")
-    new_window.geometry("200x200")
-    entry1 = Entry(new_window)
-    button1 = Button(new_window, text="Done", command=clicked)
-    entry1.pack()
-    button1.pack()
+def newfile():
+    file_name = filedialog.asksaveasfilename(initialdir="/Desktop", title="Select file",
+                                 filetypes=(("text files", ".txt"), ("all files", ".")))
 
-
-
-'''
-
-
+    if file_name:
+        file = open(file_name, "w")
+        file.writelines(" ")
+        file.close()
 
 
 class FileMenu:
@@ -67,7 +62,7 @@ class FileMenu:
         file_menu = Menu(menu)
         menu.add_cascade(label=self.menu_name, menu=file_menu)
 
-        #file_menu.add_command(label="New", command=NewFile)
+        file_menu.add_command(label="New", command=newfile)
         file_menu.add_command(label="Save", command=savefile)
         file_menu.add_command(label="Open...", command=openfile)
         file_menu.add_separator()
