@@ -1,22 +1,29 @@
 from tkinter import *
 from tkinter.filedialog import askopenfilename
+from tkinter import filedialog
 from tkinter.scrolledtext import ScrolledText
 import tkinter as tk
 
 root = tk.Tk()
 text_area = ScrolledText(root)
+global entry1
 
 
-def SaveFile():
+def savefile():
     print("New File!")
-    file_name = askopenfilename()
+    file_name = filedialog.asksaveasfilename(initialdir="/", title="Select file", filetypes=(("text files", ".txt"), ("all files", ".")))
 
     if file_name:
-        f = text_area.get("1.0", "end")
-        f.write(f)
-        f.close()
+        file = open(file_name, "w")
+        text = text_area.get("1.0", END)
+        file.writelines(text)
+        file = open(file_name)
+        content = file.read()
+        file.close()
+        print(content)
 
-def OpenFile():
+
+def openfile():
     name = askopenfilename()
     file = open(name, "r")
     opened = file.read()
@@ -24,6 +31,29 @@ def OpenFile():
     text_area.insert(tk.INSERT, opened)
 
     print(name)
+
+
+def check():
+    try:
+        print(text_area.get("1.0", END))
+    except:
+        print("nothing")
+
+
+'''def NewFile():
+    new_window = Toplevel(root)
+    new_window.title("new file")
+    new_window.geometry("200x200")
+    entry1 = Entry(new_window)
+    button1 = Button(new_window, text="Done", command=clicked)
+    entry1.pack()
+    button1.pack()
+
+
+
+'''
+
+
 
 
 class FileMenu:
@@ -37,14 +67,18 @@ class FileMenu:
         file_menu = Menu(menu)
         menu.add_cascade(label=self.menu_name, menu=file_menu)
 
-        file_menu.add_command(label="Save", command=SaveFile)
-        file_menu.add_command(label="Open...", command=OpenFile)
+        #file_menu.add_command(label="New", command=NewFile)
+        file_menu.add_command(label="Save", command=savefile)
+        file_menu.add_command(label="Open...", command=openfile)
         file_menu.add_separator()
         file_menu.add_command(label="Exit", command=root.quit)
+        file_menu.add_command(label="check", command=check())
 
 
 menu = FileMenu("File")
 menu.filemenu()
 text_area.pack()
+
+
 
 mainloop()
